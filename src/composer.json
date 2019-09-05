@@ -1,0 +1,6 @@
+{
+    "require": {
+        "monolog/monolog": "^1.24",
+        "gmsantos/inspiring": "^2.1"
+    }
+}

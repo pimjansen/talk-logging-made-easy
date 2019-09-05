@@ -1,0 +1,46 @@
+version: '3.7'
+
+volumes:
+  es-data:
+
+services:
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.3.1
+    environment:
+      - node.name=elasticsearch
+      - cluster.initial_master_nodes=elasticsearch
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms256m -Xmx256m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - es-data:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.3.1
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:7.3.1
+    command: --strict.perms=false -e
+    # secrets:
+    #   - source: filebeat.yml
+    #     target: /usr/share/filebeat/filebeat.yml
+    #   - source: filebeat.keystore
+    #     target: /usr/share/filebeat/filebeat.keystore
+    #   - source: ca.crt
+    #     target: /usr/share/filebeat/certs/ca/ca.crt
+    volumes:
+      - ./src/var/log/:/var/log/myapp:ro
+      - ./filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+    depends_on:
+      - elasticsearch
