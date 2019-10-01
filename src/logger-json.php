@@ -17,13 +17,19 @@ use Gmsantos\Inspiring;
 try {
     $formatter = new JsonFormatter();
 
-    $handler = new StreamHandler(__DIR__ . '/var/log/app.log', Logger::DEBUG);
+    $handler = new StreamHandler(__DIR__ . '/var/log/json/app.log', Logger::DEBUG);
     $handler->setFormatter($formatter);
 
     $logger = new Logger('channel-name');
     $logger->pushHandler($handler);
 
-    $logger->error(Inspiring::quote(), ['extra'=>'data', 'more'=>'custom-data']);
+    $logger->error(Inspiring::quote(), [
+        'user' => [
+            'id' => 1,
+            'username' => 'my-user-name',
+        ],
+        'more' => 'custom-data'
+    ]);
 } catch (Exception $exception) {
     // noop
 }

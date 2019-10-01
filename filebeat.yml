@@ -7,7 +7,7 @@ filebeat.inputs:
 - type: log
   enabled: true
   paths:
-    - /var/log/myapp/**/*.log
+    - /var/log/myapp/json/**/*.log
   json.keys_under_root: true
   json.add_error_key: true
   json.message_key: message
@@ -16,7 +16,7 @@ filebeat.inputs:
 - type: log
   enabled: true
   paths:
-    - /var/log/myapp/**/*.log
+    - /var/log/myapp/plain/**/*.log
   multiline.pattern: '^\[[0-9]{4}-[0-9]{2}-[0-9]{2}'
   multiline.negate: true
   multiline.match: after
@@ -29,3 +29,5 @@ output.elasticsearch:
   hosts: '${ELASTICSEARCH_HOSTS:elasticsearch:9200}'
   username: '${ELASTICSEARCH_USERNAME:}'
   password: '${ELASTICSEARCH_PASSWORD:}'
+
+logging.metrics.enabled: false

@@ -14,14 +14,14 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Gmsantos\Inspiring;
 
-$errors = 500000;
-$warnings = 20000;
-$notices = 100000;
+$errors = 5000;
+$warnings = 200;
+$notices = 1000;
 
 try {
     $formatter = new JsonFormatter();
 
-    $handler = new StreamHandler(__DIR__ . '/../var/log/app.log', Logger::DEBUG);
+    $handler = new StreamHandler(__DIR__ . '/../var/log/json/graph.log', Logger::DEBUG);
     $handler->setFormatter($formatter);
     $logger = new Logger('channel-name');
     $logger->pushHandler($handler);
